@@ -6,7 +6,7 @@ import snoop
 from docstringer import docstringer
 from docstringer.formatters import (
     LoggerFormatter,
-    EventFormatter,
+    EventListFormatter,
     DefaultFormatter,
     PrintSimpleFormatter,
 )
@@ -19,9 +19,9 @@ formatter = PrintSimpleFormatter()
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # formatter = LoggerFormatter(logging, "info")
 
-# # Using the EventFormatter ...
+# # Using the EventListFormatter ...
 # event_list = []
-# formatter = EventFormatter(event_list)
+# formatter = EventListFormatter(event_list)
 
 
 @docstringer(formatter=formatter)

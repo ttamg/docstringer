@@ -87,12 +87,12 @@ By default _docstringer_ is active and will log the call stack on the decorated 
 To switch off the `@docstringer` decorator without removing it, pass the `active=False` parameter to the decorator. This can be done globally using a configuration. For example:
 
 ```python
-    DEBUG = False  # Set to True in debug mode when decorator should be active\
+DEBUG = False  # Set to True in debug mode when decorator should be active\
 
-    @docstringer(active=DEBUG)
-    def my_function():
-        """ My function to be documented when it is called """
-        ...
+@docstringer(active=DEBUG)
+def my_function():
+    """ My function to be documented when it is called """
+    ...
 
 ```
 
@@ -102,17 +102,17 @@ Different _Formatters_ can be used to push the output in different formats by pa
 
 By default _docstringer_ outputs the function call information as print statements to the console. This default formatter is the `PrintFormatter`
 
-You can set a different formatter by passing this to the `formatter` parameter in the docstring. The built in formatters are outlined below. Or you can customise your own:
+You can set a different formatter by passing this to the `formatter` parameter in the docstring. The built in formatters are outlined below. Or you can customise your own
 
 ```python
-    from docstringer.formatters import LoggerFormatter
+from docstringer.formatters import LoggerFormatter
 
-    formatter = LoggerFormatter(logger=logger, log_level='info')
+formatter = LoggerFormatter(logger=logger, log_level='info')
 
-    @docstringer(formatter=formatter)
-    def my_function():
-        """ My function to be documented when it is called """
-        ...
+@docstringer(formatter=formatter)
+def my_function():
+    """ My function to be documented when it is called """
+    ...
 
 ```
 
@@ -121,21 +121,34 @@ You can set a different formatter by passing this to the `formatter` parameter i
 This formatter outputs the function call information to the logger of your choice instead of printing to the screen. When instantiating the `LoggerFormatter`, pass it the logger and log=level you want to use:
 
 ```python
-    import logging
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
+from docstringer.formatters import LoggerFormatter
+import logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 
-    @docstringer(formatter=LoggerFormatter(logger=logging, log_level='info')
-    def my_function():
-        ...
+@docstringer(formatter=LoggerFormatter(logger=logging, log_level='info')
+def my_function():
+    ...
+
 ```
 
 This will now output function calls as log items.
 
-### EventFormatter
+### EventListFormatter
 
-This will return the function call information a a list of `FunctionEvent` objects. These objects contain the name, docstring, call values and return values of each function call in the order that they were called.
+The `EventListFormatter` will return the function call information a a list of `FunctionEvent` objects. These objects contain the name, docstring, call values and return values of each function call in the order that they were called.
 
-This formatter is passed a list (usually an empty list) and it will populate this list with the FunctionEvent objects that occur on decorated functions.
+This formatter is passed a list (usually an empty list) when it is instantiated and it will populate this list with the FunctionEvent objects that occur on decorated functions.
+
+```python
+from docstringer.formatters import EventListFormatter
+
+event_list = []
+
+@docstringer(formatter=EventListFormatter(event_list))
+def my_function():
+    ...
+
+```
 
 # Combining with other tracing or introspection packages
 
@@ -178,11 +191,11 @@ CALL to roll (id=4343471264)
     - the value of the die roll
 
 
- >>> Call to roll in File "/Users/matt/Projects/docstringer/demo.py", line 50
- ...... sides = 6
-   50 | def roll(sides: int = 6) -> int:
-   60 |     return random.randint(1, sides)
- <<< Return value from roll: 1
+>>> Call to roll in File "/Users/matt/Projects/docstringer/demo.py", line 50
+...... sides = 6
+50 | def roll(sides: int = 6) -> int:
+60 |     return random.randint(1, sides)
+<<< Return value from roll: 1
 
 ...
 ```

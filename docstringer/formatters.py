@@ -72,7 +72,7 @@ class LoggerFormatter(BaseFormatter):
         getattr(self.logger, self.log_level)(output)
 
 
-class EventFormatter(BaseFormatter):
+class EventListFormatter(BaseFormatter):
     """ Assembles a list of FunctionEvent objects that have been called  """
 
     def __init__(self, list_: list):
